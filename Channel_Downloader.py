@@ -10,6 +10,7 @@ import os
 import AuxDownloaderFile as YT_Downloader
 import signal
 import sys
+from sys import exit
 
 #Default paths, change them if you prefer to store downloads elsewhere
 music_output_path = "./Musics/"
@@ -18,7 +19,7 @@ temp_path = "./Temp/"
 
 
 def signal_handler(signal, frame):
-  sys.exit(0)
+  exit()
 
 
 def auxMet():
@@ -31,6 +32,7 @@ def auxMet():
         auxMet()
 
     print("Channel name: " + channel.channel_name)
+    print("This will take a wile depending on the number of videos posted by the channel, don't panic...")
     print("Number of videos " + str(len(channel.video_urls)))
     print("Do you want to download all of the channel videos? Press 1\nDo you want to download only X latest videos? Press 2\nQuit? Press 3")
     choiceAll = int(input())
@@ -49,14 +51,12 @@ def auxMet():
             elif(lastChoice == 2):
                 print("Bye!")
                 exit()
-                return
             else:
                 print("Wrong input :(\nTry again")
                 auxMet()
         elif(choiceDownload == 2):
                 print("Bye!")
                 exit()
-                return
         else:
             print("Wrong input :(\nTry again")
             auxMet()
@@ -138,7 +138,6 @@ def downloads(url, choice, channelTitle):
         elif (choice == 5):
             print("Bye!")
             exit()
-            return
         
         else:
             print("Wrong input :(\nTry again")
