@@ -15,7 +15,16 @@ temp_path = "./Temp/"
 
 def onlyAudio(yt, titleVideo, isPlaylist, playlistTitle, channelTitle):
     if not (isPlaylist):
+
         audio_streams = yt.streams.get_audio_only()
+
+        #TODO por barra de progresso
+        length = audio_streams.filesize
+        generator = (3 * n for n in range(length))  # just doing something random
+        for n in tqdm(generator, total=length, unit='B', unit_scale=True, unit_divisor=1024):
+            pass
+        print("Almost done...")
+
         formatedChannelName = "".join( x for x in channelTitle if (x.isalnum() or x in "._- ,()"))
         audio_streams.download(filename = titleVideo + ".mp3", output_path = music_output_path + formatedChannelName)
         print("\nDownload finished!")
@@ -58,6 +67,13 @@ def highestQualityVideo(yt, titleVideo, isPlaylist, playlistTitle, channelTitle)
 def averageQualityVideo(yt, titleVideo, isPlaylist, playlistTitle, channelTitle):
     averageQuality_streams = yt.streams.filter(progressive=True).order_by('resolution').desc()
     print(averageQuality_streams)
+
+    length = averageQuality_streams.first().filesize
+    generator = (3 * n for n in range(length))  # just doing something random
+    for n in tqdm(generator, total=length, unit='B', unit_scale=True, unit_divisor=1024):
+        pass
+    print("Almost done...")
+
     if not isPlaylist:
         formatedChannelName = "".join( x for x in channelTitle if (x.isalnum() or x in "._- ,()"))
         averageQuality_streams.first().download(filename = "[AQ] " + titleVideo + ".mp4", output_path = video_output_path  +  "[AQ] " + formatedChannelName)
@@ -68,6 +84,14 @@ def lowestQualityVideo(yt, titleVideo, isPlaylist, playlistTitle, channelTitle):
     #Progressive contains both video and audio
     lowestQuality_stream = yt.streams.filter(progressive=True).order_by('resolution').asc().first() 
     print(lowestQuality_stream)
+
+    length = lowestQuality_stream.filesize
+    generator = (3 * n for n in range(length))  # just doing something random
+    for n in tqdm(generator, total=length, unit='B', unit_scale=True, unit_divisor=1024):
+        pass
+    print("Almost done...")
+
+
     if not isPlaylist:
         formatedChannelName = "".join( x for x in channelTitle if (x.isalnum() or x in "._- ,()"))
         lowestQuality_stream.download(filename = "[LQ] " + titleVideo + ".mp4", output_path = video_output_path + "[LQ] " + formatedChannelName)
@@ -112,9 +136,6 @@ def main():
         #Only audio
         if(choice == 1):
             onlyAudio(yt, titleVideo, False, None)
-        
-        #TODO No caso do video, falta fazer a verificacao de resolucoes mais altas, fazer merge com ffmpeg do audio e do video e apagar aux
-        #TODO playlists tbm para videos
 
         #Highest quality video
         elif(choice == 2):  

@@ -8,12 +8,18 @@ import ffmpeg
 import shutil
 import os
 import AuxDownloaderFile as YT_Downloader
-
+import signal
+import sys
 
 #Default paths, change them if you prefer to store downloads elsewhere
 music_output_path = "./Musics/"
 video_output_path = "./Videos/"
 temp_path = "./Temp/"
+
+
+def signal_handler(signal, frame):
+  sys.exit(0)
+
 
 def auxMet():
     print("Which channel do you want to download videos from?")
@@ -26,7 +32,7 @@ def auxMet():
 
     print("Channel name: " + channel.channel_name)
     print("Number of videos " + str(len(channel.video_urls)))
-    print("Do you want to download all of the channel videos? Press 1\nDo you want to download only X latest videos? Press 2")
+    print("Do you want to download all of the channel videos? Press 1\nDo you want to download only X latest videos? Press 2\nQuit? Press 3")
     choiceAll = int(input())
     if(choiceAll == 1):
         print("Do you really wish to download all the videos in the channel?\nPress 1, if yes\nPress 2, if not")
@@ -143,5 +149,5 @@ def downloads(url, choice, channelTitle):
         if (os.path.exists(temp_path)):
             shutil.rmtree(temp_path)
 
-
+signal.signal(signal.SIGINT, signal_handler)
 auxMet()
